@@ -1,0 +1,18 @@
+{
+  "name": "rss-radio",
+  "version": "1.0.0",
+  "main": "main.js",
+  "dependencies": {
+    "html-to-text": "^3.3.0",
+    "node-fetch": "^1.6.3",
+    "openjtalk": "^0.1.6",
+    "xml2js": "^0.4.17"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository" : "https://github.com/ktknest/rss-radio",
+  "author": "ktknest",
+  "license": "ISC",
+  "description": ""
+}
