@@ -1,5 +1,8 @@
 const OpenJTalk = require('openjtalk');
-const mei = new OpenJTalk();
+const mei = new OpenJTalk({
+  gv_weight_mgc: 2.0,
+});
+const spawn = require('child_process').spawn;
 
 class Talker {
   constructor() {
@@ -41,7 +44,18 @@ class Talker {
       });
     }
 
-    next.call(this);
+    const jingle = spawn('aplay', ['./ji_038.wav']);
+    jingle.on('close', code => {
+      if (this.aborted) {
+        callback(false);
+        return;
+      }
+      next.call(this);
+    });
+
+    this._killHandler = () => {
+      jingle && jingle.kill();
+    };
   }
 
   abort() {
