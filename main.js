@@ -78,7 +78,7 @@ class RSS_RADIO {
   }
 
   fetch() {
-    return resource.fetch()
+    return resource.fetchDummy()
       .then(result => {
         console.log('Loaded: all');
         this.media = resource.getMediaNames()[1];

@@ -2,10 +2,16 @@ const fetch = require('node-fetch');
 const xml2js = require('xml2js');
 const parser = new xml2js.Parser();
 const htmlToText = require('html-to-text');
+const fs = require('fs');
 
 const rss = {
   google : 'https://news.google.com/news?hl=ja&ned=us&ie=UTF-8&oe=UTF-8&output=rss',
   makezine : 'http://makezine.jp/feed'
+};
+
+const dummyJson = {
+  google : './google.json',
+  makezine : './makezine.json'
 };
 
 class Resource {
@@ -38,6 +44,17 @@ class Resource {
             });
           });
         });
+    }));
+  }
+
+  fetchDummy() {
+    return Promise.all(Object.keys(dummyJson).map(media => {
+      return new Promise((resolve, reject) => {
+        fs.readFile(dummyJson[media], (err, data) => {
+          this.data[media] = JSON.parse(data.toString());
+          resolve();
+        });
+      });
     }));
   }
 
