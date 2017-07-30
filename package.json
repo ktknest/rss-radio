@@ -5,7 +5,7 @@
   "dependencies": {
     "html-to-text": "^3.3.0",
     "node-fetch": "^1.6.3",
-    "openjtalk": "^0.1.6",
+    "openjtalk": "git+https://github.com/ktknest/node-openjtalk.git",
     "xml2js": "^0.4.17"
   },
   "scripts": {
