@@ -3,6 +3,7 @@ const mei = new OpenJTalk({
   gv_weight_mgc: 2.0,
 });
 const spawn = require('child_process').spawn;
+const path = require('path');
 
 class Talker {
   constructor() {
@@ -44,7 +45,7 @@ class Talker {
       });
     }
 
-    const jingle = spawn('aplay', ['./ji_038.wav']);
+    const jingle = spawn('aplay', [path.join(__dirname, './ji_038.wav')]);
     jingle.on('close', code => {
       if (this.aborted) {
         callback(false);
