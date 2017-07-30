@@ -45,7 +45,7 @@ class Talker {
       });
     }
 
-    const jingle = spawn('aplay', [path.join(__dirname, './ji_038.wav')]);
+    const jingle = spawn('aplay', [path.join(__dirname, './src/ji_038.wav')]);
     jingle.on('close', code => {
       if (this.aborted) {
         callback(false);

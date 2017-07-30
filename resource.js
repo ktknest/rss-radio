@@ -10,8 +10,8 @@ const rss = {
 };
 
 const dummyJson = {
-  google : './google.json',
-  makezine : './makezine.json'
+  google : './src/google.json',
+  makezine : './src/makezine.json'
 };
 
 class Resource {
