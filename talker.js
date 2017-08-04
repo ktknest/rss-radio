@@ -1,7 +1,5 @@
 const OpenJTalk = require('openjtalk');
-const mei = new OpenJTalk({
-  gv_weight_mgc: 2.0,
-});
+const mei = new OpenJTalk();
 const spawn = require('child_process').spawn;
 const path = require('path');
 
@@ -23,10 +21,15 @@ class Talker {
 
     const texts = text.split(/、|。|\r\n|\r|\n/).filter(target => target.length);
 
-    function next() {
-      console.log(`[${texts.length}]${texts[0]}`);
-
-      this._killHandler = mei.talk(texts.shift(), (err, stdout, stderr) => {
+    console.log('jingle:start');
+    const jingle = spawn('aplay', [path.join(__dirname, './src/ji_038.wav')]);
+    jingle.on('close', code => {
+      if (this.aborted) {
+        callback(false);
+        return;
+      }
+      console.log('jingle:end');
+      this._killHandler = mei.talkList(texts, (err, stdout, stderr) => {
         if (this.aborted) {
           callback(false);
           return;
@@ -36,27 +39,18 @@ class Talker {
           console.log('[err]', err);
         }
 
-        if (texts.length) {
-          next.call(this);
-          return;
-        }
-
         callback(true);
       });
-    }
-
-    const jingle = spawn('aplay', [path.join(__dirname, './src/ji_038.wav')]);
-    jingle.on('close', code => {
-      if (this.aborted) {
-        callback(false);
-        return;
-      }
-      next.call(this);
     });
 
     this._killHandler = () => {
+      console.log('jingle.kill()');
       jingle && jingle.kill();
     };
+  }
+
+  removeAll() {
+    mei.removeAll();
   }
 
   abort() {

@@ -32,6 +32,7 @@ class RSS_RADIO {
     gpio.export(PINS.AUTO_SWITCH, 'in');
 
     prc.onExit(() => {
+      talker.removeAll();
       lcd.print('EXIT');
     });
 
@@ -78,10 +79,10 @@ class RSS_RADIO {
   }
 
   fetch() {
-    return resource.fetchDummy()
+    return (process.env.NODE_MODE === 'offline' ? resource.fetchDummy() : resource.fetch())
       .then(result => {
         console.log('Loaded: all');
-        this.media = resource.getMediaNames()[1];
+        this.media = resource.getMediaKeys()[0];
         this.endLoading();
       })
       .catch(err => {
@@ -116,7 +117,7 @@ class RSS_RADIO {
     gpio.write(PINS.YELLOW_LED, 1);
     this.isPlaying = true;
 
-    const data = resource.getData(this.media);
+    const data = resource.getMediaList(this.media);
     console.log(`=== play: ${this.media}`);
     lcd.print(`PLAY    ${this.media}`);
 
@@ -125,7 +126,7 @@ class RSS_RADIO {
     let description = data[index].description;
 
     console.log('Start: title >', title);
-    talker.run(['次のニュースです', title, description].join('\n'), result => {
+    talker.run([`${resource.getMediaName(this.media)}の次のニュースです`, title, description].join('\n'), result => {
       // LOOP
       if (!gpio.read(PINS.AUTO_SWITCH)) {
         this.play();
