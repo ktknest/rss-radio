@@ -56,7 +56,7 @@ class Resource {
                   };
                 })
               };
-              fs.writeFile(path.join(__dirname, `./src/${media}.json`), () => {
+              fs.writeFile(path.join(__dirname, `./src/${media}.json`), JSON.stringify(this.data[media].list), () => {
                 console.log(`save ${path.join(__dirname, `./src/${media}.json`)}`);
               });
               resolve();
